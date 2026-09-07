@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tasty Ice-cream — Bopal, Ahmedabad</title>
+<meta name="description" content="Tasty Ice-cream in Bopal, Ahmedabad. Fresh scoops every evening, 5 pm to 10 pm, Monday to Saturday.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --mint:#E6F4DC;
+    --mint-deep:#CFE8BC;
+    --choc:#3A2418;
+    --choc-soft:#6B4A38;
+    --straw:#F2607E;
+    --straw-dark:#D4405F;
+    --mango:#FFB833;
+    --vanilla:#FFF9EA;
+    --white:#FFFFFF;
+    --radius-big:36px;
+    --radius:20px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto} *{animation:none!important;transition:none!important}}
+  body{
+    font-family:'Nunito',system-ui,sans-serif;
+    background:var(--mint);
+    color:var(--choc);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{font-family:'Fredoka',sans-serif;font-weight:600;line-height:1.05;letter-spacing:-0.01em}
+  a{color:inherit}
+  a:focus-visible,button:focus-visible{outline:3px solid var(--straw);outline-offset:3px;border-radius:6px}
+  .wrap{width:min(1120px,92vw);margin:0 auto}
+
+  /* ---------- Header ---------- */
+  header{padding:22px 0}
+  .nav{display:flex;align-items:center;justify-content:space-between;gap:20px}
+  .brand{display:flex;align-items:center;gap:10px;text-decoration:none;font-family:'Fredoka',sans-serif;font-weight:700;font-size:1.4rem}
+  .brand svg{width:34px;height:34px}
+  .nav ul{display:flex;gap:28px;list-style:none;font-weight:700}
+  .nav ul a{text-decoration:none;padding:6px 0;border-bottom:3px solid transparent;transition:border-color .2s}
+  .nav ul a:hover{border-bottom-color:var(--straw)}
+  .nav .call{background:var(--choc);color:var(--vanilla);padding:12px 20px;border-radius:999px;text-decoration:none;font-weight:700;white-space:nowrap}
+  .nav .call:hover{background:var(--straw-dark)}
+  @media (max-width:700px){.nav ul{display:none}}
+
+  /* ---------- Hero ---------- */
+  .hero{padding:40px 0 70px}
+  .hero-grid{display:grid;grid-template-columns:1.15fr .85fr;align-items:center;gap:40px}
+  .hero h1{font-size:clamp(2.8rem,7vw,5.6rem);font-weight:700;color:var(--choc);max-width:11ch}
+  .hero p{font-size:1.2rem;color:var(--choc-soft);max-width:44ch;margin:24px 0 32px}
+  .hours-pill{
+    display:inline-flex;align-items:center;gap:12px;
+    background:var(--vanilla);border:2px solid var(--choc);
+    padding:12px 20px 12px 14px;border-radius:999px;font-weight:700;
+  }
+  .hours-pill .dot{width:12px;height:12px;border-radius:50%;background:var(--straw)}
+  .hours-pill .dot.open{background:#4CAF50}
+  .cta-row{display:flex;flex-wrap:wrap;gap:14px;margin-top:28px}
+  .btn{display:inline-block;padding:16px 28px;border-radius:999px;text-decoration:none;font-weight:700;font-size:1.05rem;transition:transform .15s, background .2s}
+  .btn:hover{transform:translateY(-2px)}
+  .btn-primary{background:var(--straw);color:var(--white)}
+  .btn-primary:hover{background:var(--straw-dark)}
+  .btn-ghost{background:transparent;border:2px solid var(--choc);color:var(--choc)}
+  .btn-ghost:hover{background:var(--choc);color:var(--vanilla)}
+
+  .cone-wrap{display:flex;justify-content:center}
+  .cone-wrap svg{width:min(100%,380px);height:auto;filter:drop-shadow(0 20px 30px rgba(58,36,24,.18))}
+  .cone-wrap .drip{animation:drip 3.5s ease-in-out infinite alternate}
+  @keyframes drip{from{transform:translateY(0)}to{transform:translateY(6px)}}
+  @media (max-width:820px){
+    .hero-grid{grid-template-columns:1fr}
+    .cone-wrap{order:-1}
+    .cone-wrap svg{width:min(70%,260px)}
+    .hero{padding-top:10px}
+  }
+
+  /* ---------- Sections ---------- */
+  section{padding:70px 0}
+  .section-head{display:flex;align-items:baseline;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:36px}
+  .section-head h2{font-size:clamp(2rem,4.5vw,3.2rem)}
+  .section-head p{color:var(--choc-soft);max-width:40ch}
+
+  /* Flavours */
+  .flavours{background:var(--vanilla);border-radius:var(--radius-big)}
+  .menu{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:22px}
+  .scoop{
+    background:var(--white);border-radius:var(--radius);padding:22px 22px 20px;
+    border-bottom:6px solid var(--swatch,var(--straw));
+    display:flex;flex-direction:column;gap:8px;
+  }
+  .scoop .swatch{width:52px;height:52px;border-radius:50% 50% 50% 8px;background:var(--swatch);margin-bottom:6px}
+  .scoop h3{font-size:1.4rem}
+  .scoop p{color:var(--choc-soft);font-size:.98rem;flex:1}
+  .scoop .price{font-family:'Fredoka',sans-serif;font-weight:600;font-size:1.25rem;margin-top:8px}
+  .scoop .price span{font-size:.85rem;color:var(--choc-soft);font-weight:400;font-family:'Nunito',sans-serif}
+  .menu-note{margin-top:26px;color:var(--choc-soft);font-size:.95rem}
+
+  /* Hours */
+  .hours-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start}
+  .timetable{list-style:none;background:var(--choc);color:var(--vanilla);border-radius:var(--radius);overflow:hidden}
+  .timetable li{display:flex;justify-content:space-between;padding:16px 24px;border-bottom:1px solid rgba(255,249,234,.14);font-weight:600}
+  .timetable li:last-child{border-bottom:none}
+  .timetable li.closed span:last-child{color:var(--mango)}
+  .hours-copy h2{font-size:clamp(2rem,4.5vw,3.2rem);margin-bottom:18px}
+  .hours-copy p{color:var(--choc-soft);max-width:42ch;margin-bottom:16px}
+  .big-time{font-family:'Fredoka',sans-serif;font-weight:700;font-size:clamp(2.6rem,6vw,4.2rem);line-height:1;color:var(--straw-dark);margin:10px 0 22px}
+  @media (max-width:760px){.hours-grid{grid-template-columns:1fr}}
+
+  /* Visit */
+  .visit{background:var(--straw);color:var(--white);border-radius:var(--radius-big)}
+  .visit-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px}
+  .visit h2{font-size:clamp(2rem,4.5vw,3.2rem);margin-bottom:22px}
+  .visit address{font-style:normal;font-size:1.25rem;line-height:1.5;margin-bottom:28px}
+  .contact-list{list-style:none;display:flex;flex-direction:column;gap:14px;font-size:1.1rem}
+  .contact-list a{text-decoration:none;font-weight:700;border-bottom:2px solid rgba(255,255,255,.5)}
+  .contact-list a:hover{border-bottom-color:var(--white)}
+  .contact-list li{display:flex;gap:12px;align-items:center}
+  .contact-list svg{width:22px;height:22px;flex:none}
+  .map-card{background:var(--white);color:var(--choc);border-radius:var(--radius);padding:26px;display:flex;flex-direction:column;gap:14px}
+  .map-card h3{font-size:1.5rem}
+  .map-card p{color:var(--choc-soft)}
+  .map-card .btn{align-self:flex-start;background:var(--choc);color:var(--vanilla)}
+  .map-card .btn:hover{background:var(--straw-dark)}
+  .map-frame{width:100%;aspect-ratio:16/9;border:0;border-radius:12px;background:var(--mint-deep)}
+  @media (max-width:760px){.visit-grid{grid-template-columns:1fr}}
+
+  /* Footer */
+  footer{padding:40px 0 30px;text-align:center;color:var(--choc-soft);font-size:.95rem}
+  footer strong{font-family:'Fredoka',sans-serif;color:var(--choc);font-size:1.1rem}
+  footer p{margin-top:6px}
+  .sunday{font-style:italic}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <a class="brand" href="#top" aria-label="Tasty Ice-cream home">
+      <svg viewBox="0 0 40 40" aria-hidden="true">
+        <path d="M20 38 8 18h24z" fill="#FFB833"/>
+        <circle cx="20" cy="15" r="9" fill="#F2607E"/>
+        <circle cx="14" cy="11" r="6" fill="#E6F4DC"/>
+        <circle cx="26" cy="11" r="6" fill="#3A2418"/>
+      </svg>
+      Tasty Ice-cream
+    </a>
+    <ul>
+      <li><a href="#flavours">Flavours</a></li>
+      <li><a href="#hours">Hours</a></li>
+      <li><a href="#visit">Find us</a></li>
+    </ul>
+    <a class="call" href="tel:+918899758596">Call 88997 58596</a>
+  </div>
+</header>
+
+<main id="top">
+
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <h1>Cold scoops for warm Bopal evenings.</h1>
+        <p>Every evening from five, we open the counter, fill the tubs and start scooping. Fresh flavours, generous cones, and a bench outside for when the breeze finally arrives.</p>
+        <div class="hours-pill" id="status-pill">
+          <span class="dot" id="status-dot"></span>
+          <span id="status-text">Open 5 pm – 10 pm, Monday to Saturday</span>
+        </div>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="#flavours">See the flavours</a>
+          <a class="btn btn-ghost" href="#visit">Get directions</a>
+        </div>
+      </div>
+
+      <div class="cone-wrap" aria-hidden="true">
+        <svg viewBox="0 0 300 420" xmlns="http://www.w3.org/2000/svg">
+          <!-- cone -->
+          <path d="M92 218 L150 410 L208 218 Z" fill="#E9A23B"/>
+          <path d="M92 218 L150 410 L208 218 Z" fill="none" stroke="#C97F1D" stroke-width="3"/>
+          <g stroke="#C97F1D" stroke-width="3" fill="none" stroke-linecap="round">
+            <path d="M104 258 L196 258"/><path d="M114 292 L186 292"/><path d="M124 326 L176 326"/><path d="M134 360 L166 360"/>
+            <path d="M118 218 L164 372"/><path d="M148 218 L178 316"/><path d="M182 218 L136 372"/><path d="M152 218 L122 316"/>
+          </g>
+          <!-- chocolate scoop -->
+          <circle cx="150" cy="200" r="66" fill="#5A3826"/>
+          <path class="drip" d="M120 238 q6 34 -2 44 q-8 -14 -10 -40 Z" fill="#5A3826"/>
+          <path class="drip" d="M178 240 q4 26 10 32 q0 -18 -4 -34 Z" fill="#5A3826"/>
+          <!-- pistachio scoop -->
+          <circle cx="104" cy="150" r="60" fill="#B7DFA0"/>
+          <circle cx="86" cy="134" r="14" fill="#D8EFC9"/>
+          <!-- strawberry scoop -->
+          <circle cx="196" cy="150" r="60" fill="#F2607E"/>
+          <circle cx="212" cy="132" r="14" fill="#FFA3B8"/>
+          <!-- mango top scoop -->
+          <circle cx="150" cy="92" r="62" fill="#FFB833"/>
+          <circle cx="132" cy="72" r="16" fill="#FFD57A"/>
+          <!-- cherry -->
+          <path d="M150 30 q10 -22 26 -26" stroke="#3A2418" stroke-width="4" fill="none" stroke-linecap="round"/>
+          <circle cx="150" cy="32" r="13" fill="#D4405F"/>
+          <circle cx="146" cy="27" r="4" fill="#FF8FA7"/>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <div class="wrap">
+    <section class="flavours" id="flavours">
+      <div class="wrap">
+        <div class="section-head">
+          <h2>What's in the tubs</h2>
+          <p>Scooped into a cone or a cup. Ask at the counter for today's special — it changes with what's in season.</p>
+        </div>
+        <div class="menu">
+          <article class="scoop" style="--swatch:#8D5A3A">
+            <div class="swatch"></div><h3>Belgian chocolate</h3>
+            <p>Dark, dense and not too sweet. The one people come back for.</p>
+            <div class="price">₹60 <span>per scoop</span></div>
+          </article>
+          <article class="scoop" style="--swatch:#F2607E">
+            <div class="swatch"></div><h3>Strawberry</h3>
+            <p>Real fruit folded through, with soft pink streaks of jam.</p>
+            <div class="price">₹60 <span>per scoop</span></div>
+          </article>
+          <article class="scoop" style="--swatch:#FFB833">
+            <div class="swatch"></div><h3>Alphonso mango</h3>
+            <p>Sun-ripe mango pulp and cream. Tastes like summer holidays.</p>
+            <div class="price">₹70 <span>per scoop</span></div>
+          </article>
+          <article class="scoop" style="--swatch:#A9D88F">
+            <div class="swatch"></div><h3>Pista kulfi</h3>
+            <p>Slow-cooked milk, cardamom and crushed pistachio. Our Gujarati favourite.</p>
+            <div class="price">₹70 <span>per scoop</span></div>
+          </article>
+          <article class="scoop" style="--swatch:#F7E7C3">
+            <div class="swatch"></div><h3>Vanilla bean</h3>
+            <p>Simple and creamy, specked with real vanilla. Perfect with a hot brownie.</p>
+            <div class="price">₹50 <span>per scoop</span></div>
+          </article>
+          <article class="scoop" style="--swatch:#D9B38C">
+            <div class="swatch"></div><h3>Butterscotch crunch</h3>
+            <p>Caramel ice cream with crunchy praline bits in every bite.</p>
+            <div class="price">₹60 <span>per scoop</span></div>
+          </article>
+        </div>
+        <p class="menu-note">Family packs (500 ml) available for takeaway in every flavour. Sundaes, shakes and waffle cones at the counter.</p>
+      </div>
+    </section>
+  </div>
+
+  <section id="hours">
+    <div class="wrap hours-grid">
+      <div class="hours-copy">
+        <h2>Evening hours only</h2>
+        <div class="big-time">5 pm – 10 pm</div>
+        <p>We open when the day cools down and close after the last late-evening walk. Monday to Saturday, every week.</p>
+        <p class="sunday">We rest on Sundays — see you Monday.</p>
+      </div>
+      <ul class="timetable" aria-label="Opening hours">
+        <li><span>Monday</span><span>5:00 pm – 10:00 pm</span></li>
+        <li><span>Tuesday</span><span>5:00 pm – 10:00 pm</span></li>
+        <li><span>Wednesday</span><span>5:00 pm – 10:00 pm</span></li>
+        <li><span>Thursday</span><span>5:00 pm – 10:00 pm</span></li>
+        <li><span>Friday</span><span>5:00 pm – 10:00 pm</span></li>
+        <li><span>Saturday</span><span>5:00 pm – 10:00 pm</span></li>
+        <li class="closed"><span>Sunday</span><span>Closed</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="wrap">
+    <section class="visit" id="visit">
+      <div class="wrap visit-grid">
+        <div>
+          <h2>Find us in Bopal</h2>
+          <address>
+            Tasty Ice-cream<br>
+            4 Krishna Complex<br>
+            Near Aarohi Villa<br>
+            Bopal, Ahmedabad 380058
+          </address>
+          <ul class="contact-list">
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg>
+              <a href="tel:+918899758596">88997 58596</a>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 7L2 7"/></svg>
+              <a href="mailto:icecream123@gmail.com">icecream123@gmail.com</a>
+            </li>
+          </ul>
+        </div>
+        <div class="map-card">
+          <h3>Getting here</h3>
+          <iframe class="map-frame" title="Map of Tasty Ice-cream, Bopal"
+            loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+            src="https://www.google.com/maps?q=4+Krishna+Complex,+Near+Aarohi+Villa,+Bopal,+Ahmedabad+380058&output=embed"></iframe>
+          <p>Right next to Aarohi Villa in Bopal. Two-wheeler parking outside the complex.</p>
+          <a class="btn" target="_blank" rel="noopener" href="https://www.google.com/maps/dir/?api=1&destination=4+Krishna+Complex,+Near+Aarohi+Villa,+Bopal,+Ahmedabad+380058">Open in Google Maps</a>
+        </div>
+      </div>
+    </section>
+  </div>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <strong>Tasty Ice-cream</strong>
+    <p>4 Krishna Complex, Near Aarohi Villa, Bopal, Ahmedabad 380058 &nbsp;|&nbsp; 88997 58596 &nbsp;|&nbsp; icecream123@gmail.com</p>
+    <p>Open 5 pm – 10 pm, Monday to Saturday.</p>
+  </div>
+</footer>
+
+<script>
+  // Live "open now / closed" status in the hero pill (IST, Mon–Sat 17:00–22:00)
+  (function(){
+    var now = new Date();
+    var ist = new Date(now.toLocaleString('en-US',{timeZone:'Asia/Kolkata'}));
+    var day = ist.getDay(); // 0 = Sunday
+    var mins = ist.getHours()*60 + ist.getMinutes();
+    var dot = document.getElementById('status-dot');
+    var text = document.getElementById('status-text');
+    if(day !== 0 && mins >= 17*60 && mins < 22*60){
+      dot.classList.add('open');
+      text.textContent = 'Open now — scooping till 10 pm';
+    } else if(day === 0){
+      text.textContent = 'Closed on Sundays — back Monday at 5 pm';
+    } else if(mins < 17*60){
+      text.textContent = 'Opens today at 5 pm';
+    } else {
+      text.textContent = 'Closed for tonight — opens tomorrow at 5 pm';
+    }
+  })();
+</script>
+</body>
+</html>

@@ -157,6 +157,21 @@
   .form-msg.err{display:block;background:#FDE4EA;color:var(--straw-dark)}
   @media (max-width:760px){.enquiry-grid{grid-template-columns:1fr}.field-row{grid-template-columns:1fr}}
 
+
+  .order-fields{display:none;margin-bottom:18px}
+  .order-fields.show{display:block}
+  .order-fields > label{font-weight:700;display:block;margin-bottom:8px}
+  .order-fields .hint{color:var(--choc-soft);font-size:.9rem;margin-bottom:10px}
+  .flavour-list{list-style:none;display:flex;flex-direction:column;gap:8px}
+  .flavour-list li{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:12px;background:var(--vanilla);border:2px solid var(--mint-deep);border-radius:12px;padding:10px 14px}
+  .flavour-list li.on{border-color:var(--straw)}
+  .flavour-list input[type=checkbox]{width:20px;height:20px;accent-color:var(--straw)}
+  .flavour-list label{font-weight:700;cursor:pointer}
+  .qty{display:flex;align-items:center;gap:6px;font-size:.95rem;color:var(--choc-soft)}
+  .qty input{width:74px;padding:8px 10px;border:2px solid var(--mint-deep);border-radius:10px;font:inherit;color:var(--choc);background:var(--white)}
+  .qty input:disabled{opacity:.45}
+  .qty input:focus{outline:none;border-color:var(--straw)}
+
   /* Footer */
   footer{padding:40px 0 30px;text-align:center;color:var(--choc-soft);font-size:.95rem}
   footer strong{font-family:'Fredoka',sans-serif;color:var(--choc);font-size:1.1rem}
@@ -337,9 +352,45 @@
             <option>Feedback</option>
           </select>
         </div>
+        <div class="order-fields" id="order-fields">
+          <label>Choose flavours and quantity</label>
+          <p class="hint">Tick the flavours you'd like and enter how much of each (in kg). Minimum 0.5 kg per flavour.</p>
+          <ul class="flavour-list">
+            <li>
+              <input type="checkbox" id="fl-0" data-flavour="Belgian chocolate">
+              <label for="fl-0">Belgian chocolate</label>
+              <span class="qty"><input type="number" id="qty-0" min="0.5" step="0.5" value="1" disabled aria-label="Belgian chocolate quantity in kg"> kg</span>
+            </li>
+            <li>
+              <input type="checkbox" id="fl-1" data-flavour="Strawberry">
+              <label for="fl-1">Strawberry</label>
+              <span class="qty"><input type="number" id="qty-1" min="0.5" step="0.5" value="1" disabled aria-label="Strawberry quantity in kg"> kg</span>
+            </li>
+            <li>
+              <input type="checkbox" id="fl-2" data-flavour="Alphonso mango">
+              <label for="fl-2">Alphonso mango</label>
+              <span class="qty"><input type="number" id="qty-2" min="0.5" step="0.5" value="1" disabled aria-label="Alphonso mango quantity in kg"> kg</span>
+            </li>
+            <li>
+              <input type="checkbox" id="fl-3" data-flavour="Pista kulfi">
+              <label for="fl-3">Pista kulfi</label>
+              <span class="qty"><input type="number" id="qty-3" min="0.5" step="0.5" value="1" disabled aria-label="Pista kulfi quantity in kg"> kg</span>
+            </li>
+            <li>
+              <input type="checkbox" id="fl-4" data-flavour="Vanilla bean">
+              <label for="fl-4">Vanilla bean</label>
+              <span class="qty"><input type="number" id="qty-4" min="0.5" step="0.5" value="1" disabled aria-label="Vanilla bean quantity in kg"> kg</span>
+            </li>
+            <li>
+              <input type="checkbox" id="fl-5" data-flavour="Butterscotch crunch">
+              <label for="fl-5">Butterscotch crunch</label>
+              <span class="qty"><input type="number" id="qty-5" min="0.5" step="0.5" value="1" disabled aria-label="Butterscotch crunch quantity in kg"> kg</span>
+            </li>
+          </ul>
+        </div>
         <div class="field">
           <label for="f-msg">Your message</label>
-          <textarea id="f-msg" placeholder="Tell us what you need, and when." required></textarea>
+          <textarea id="f-msg" placeholder="Tell us what you need, and when (date, time, any special request)."></textarea>
         </div>
         <div class="send-row">
           <button class="btn btn-wa" type="button" id="send-wa">
@@ -426,15 +477,39 @@
     var msgBox = document.getElementById('form-msg');
     function val(id){ return document.getElementById(id).value.trim(); }
     function show(text, ok){ msgBox.textContent = text; msgBox.className = 'form-msg ' + (ok ? 'ok' : 'err'); }
+    var typeSel = document.getElementById('f-type');
+    var orderBox = document.getElementById('order-fields');
+    function isOrder(){ return /order|booking/i.test(typeSel.value); }
+    function toggleOrder(){ orderBox.classList.toggle('show', isOrder()); }
+    typeSel.addEventListener('change', toggleOrder); toggleOrder();
+    var rows = orderBox.querySelectorAll('li');
+    rows.forEach(function(li){
+      var cb = li.querySelector('input[type=checkbox]'), q = li.querySelector('input[type=number]');
+      cb.addEventListener('change', function(){ q.disabled = !cb.checked; li.classList.toggle('on', cb.checked); if(cb.checked) q.focus(); });
+    });
+    function orderLines(){
+      var out = [];
+      rows.forEach(function(li){
+        var cb = li.querySelector('input[type=checkbox]'), q = li.querySelector('input[type=number]');
+        if(cb.checked){ var n = parseFloat(q.value); if(n > 0) out.push(cb.getAttribute('data-flavour') + ': ' + n + ' kg'); }
+      });
+      return out;
+    }
     function collect(){
-      var d = { name: val('f-name'), phone: val('f-phone'), email: val('f-email'), type: val('f-type'), message: val('f-msg') };
-      if(!d.name || !d.phone || !d.message){ show('Please fill in your name, phone number and message.', false); return null; }
+      var d = { name: val('f-name'), phone: val('f-phone'), email: val('f-email'), type: val('f-type'), message: val('f-msg'), order: [] };
+      if(!d.name || !d.phone){ show('Please fill in your name and phone number.', false); return null; }
+      if(isOrder()){
+        d.order = orderLines();
+        if(!d.order.length){ show('Please tick at least one flavour and enter the quantity in kg.', false); return null; }
+      } else if(!d.message){ show('Please write your message.', false); return null; }
       return d;
     }
     function body(d){
-      return 'Enquiry from Tasty Ice-cream website\n\n' +
-        'Name: ' + d.name + '\nPhone: ' + d.phone + '\nEmail: ' + (d.email || '-') +
-        '\nAbout: ' + d.type + '\n\nMessage:\n' + d.message;
+      var t = 'Enquiry from Tasty Ice-cream website\n\n' +
+        'Name: ' + d.name + '\nPhone: ' + d.phone + '\nEmail: ' + (d.email || '-') + '\nAbout: ' + d.type;
+      if(d.order.length){ t += '\n\nOrder:\n- ' + d.order.join('\n- '); }
+      if(d.message){ t += '\n\nMessage:\n' + d.message; }
+      return t;
     }
     document.getElementById('send-wa').addEventListener('click', function(){
       var d = collect(); if(!d) return;
@@ -450,12 +525,13 @@
         body: JSON.stringify({
           _subject: 'Website enquiry: ' + d.type + ' from ' + d.name,
           _template: 'table', _captcha: 'false',
-          Name: d.name, Phone: d.phone, Email: d.email || '-', About: d.type, Message: d.message
+          Name: d.name, Phone: d.phone, Email: d.email || '-', About: d.type, Order: d.order.length ? d.order.join('; ') : '-', Message: d.message || '-'
         })
       }).then(function(r){ return r.json(); }).then(function(res){
         if(res.success === 'true' || res.success === true){
           show('Sent. We will reply to you soon.', true);
           ['f-name','f-phone','f-email','f-msg'].forEach(function(id){ document.getElementById(id).value=''; });
+          rows.forEach(function(li){ var cb=li.querySelector('input[type=checkbox]'); cb.checked=false; cb.dispatchEvent(new Event('change')); });
         } else { throw new Error(); }
       }).catch(function(){
         // Fallback: open the visitor's own mail app with everything pre-filled
